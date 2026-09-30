@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Dedicated Append-Only Audit Log Rolling File -->
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/pki-audit.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/pki-audit-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>365</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- SIEM / Logstash Ingestion Logger -->
+    <logger name="org.insa.pkiissuingca.service.AuditService" level="INFO" additivity="true">
+        <appender-ref ref="AUDIT_FILE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

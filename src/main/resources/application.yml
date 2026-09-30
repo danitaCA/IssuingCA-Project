@@ -1,0 +1,68 @@
+server:
+  port: 8443
+  # TLS/HTTPS Hardening actively enabled with embedded PKCS12 server keystore
+  ssl:
+    enabled: true
+    key-store: classpath:keystore/server-keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: tomcat
+    enabled-protocols:
+      - TLSv1.3
+      - TLSv1.2
+    ciphers:
+      - TLS_AES_128_GCM_SHA256
+      - TLS_AES_256_GCM_SHA384
+      - TLS_CHACHA20_POLY1305_SHA256
+      - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+spring:
+   datasource:
+    url: jdbc:mariadb://localhost:3306/pki_db
+    username: pki_user
+    password: newpassword123  <-- The password specifically for pki_user2
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 500ms
+      connect-timeout: 500ms
+      repositories:
+        enabled: false
+
+  ldap:
+    repositories:
+      enabled: false
+
+pki:
+  hsm:
+    enabled: true
+  ca:
+    base-url: http://localhost:8080
+  crl:
+    full-interval-hours: 24
+    delta-interval-hours: 1
+    output-dir: ./target/crl-output
+  ldap:
+    enabled: false
+    url: ldap://localhost:389
+    bind-dn: cn=admin,dc=example,dc=com
+    bind-password: changeit
+    crl-dn-template: cn={caCN},ou=CRLDistributionPoints,dc=example,dc=com

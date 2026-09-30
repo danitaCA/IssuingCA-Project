@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INSA PKI Issuing CA — Trust & Lifecycle Management</title>
+    <meta name="description" content="INSA PKI Enterprise Certificate Authority Platform with CA Hierarchy, CRL/OCSP Services, HSM Key Vault & Audit Hash Chains." />
+  </head>
+  <!-- ⚡ Flash-free theme: applied synchronously before any render -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('pki_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
